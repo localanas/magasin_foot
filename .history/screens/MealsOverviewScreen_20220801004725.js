@@ -1,0 +1,43 @@
+import { useLayoutEffect } from 'react';
+import { View, FlatList, StyleSheet } from 'react-native';
+
+import MealItem from '../components/MealItem';
+import { PRODUCTS } from "../data/dummy-data";
+import Product from "../models/product";
+
+function MealsOverviewScreen({ route, navigation }) {
+  const catId = route.params.categoryId;
+
+  useLayoutEffect(() => {
+    const categoryTitle = PRODUCTS.find(
+      (category) => category.ref === catId
+    ).description;
+
+    navigation.setOptions({
+      description: categoryTitle,
+    });
+  }, [catId, navigation]);
+
+  function renderMealItem(itemData) {
+    const item = itemData.item;
+
+    const mealItemProps = {
+      id: item.ref,
+      title: item.description,
+      imageUrl: item.marque,
+      affordability: item.prix,
+    };
+    return <Product {...mealItemProps} />;
+  }
+
+  return <View style={styles.container}></View>;
+}
+
+export default MealsOverviewScreen;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 16,
+  },
+});
